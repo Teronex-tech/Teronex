@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Teronex | Next-Gen Technology Solutions - Contact via Email</title>
+    <title>Teronex | Next-Gen Technology Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="https://github.com/Teronex-tech/Teronex/blob/main/icon.png?raw=true">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff88'%3E%3Cpath d='M24 12c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zM9.5 6.5L4 12l5.5 5.5 1.5-1.5L7 12l4-4-1.5-1.5zm5 0L14.5 8l4 4-4 4 1.5 1.5L20 12l-5.5-5.5z'/%3E%3C/svg%3E">
+س
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
@@ -790,12 +791,13 @@
                 <p>NEXT-GEN SOLUTIONS</p>
             </div>
         </div>
-        <div class="nav-links">
-            <a href="#home" class="active">Home</a>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </div>
+<div class="nav-links">
+    <a href="#home" class="active">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="portfolio.html"س>Portfolio</a>
+    <a href="#contact">Contact</a>
+</div>
     </header>
 
     <!-- Hero Section -->
@@ -980,18 +982,26 @@
         typeEffect();
 
         // Smooth scroll + active nav
-        document.querySelectorAll('.nav-links a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+document.querySelectorAll('.nav-links a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        
+        // لو الرابط بيبدأ بـ # بس اعمل scroll smooth
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+            // تحديث active class
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
+        }
+        // لو الرابط لصفحة تانية (مش #) سيبه يشتغل طبيعي
+        // من غير preventDefault
+    });
+});
 
         // Floating particles
         function createParticles() {
