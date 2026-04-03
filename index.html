@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Teronex | Next-Gen Technology Solutions - Contact via Email</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #00ff88;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: floatParticle 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing Orbs */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: orbFloat 12s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            50% { transform: translate(50px, -30px) scale(1.2); opacity: 0.5; }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .logo-icon i {
+            font-size: 24px;
+            color: #0a0a0f;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            font-size: 12px;
+            color: #00ff88;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border: none;
+            border-radius: 50px;
+            color: #0a0a0f;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 14px 35px;
+            background: transparent;
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            color: #00ff88;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Typing Animation */
+        .typing-text {
+            font-size: 24px;
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 48px;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 15px;
+        }
+
+        .section-title .divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+            margin: 15px auto;
+        }
+
+        .section-title p {
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 204, 102, 0.2));
+        }
+
+        .service-icon i {
+            font-size: 40px;
+            color: #00ff88;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 50px;
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 48px;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 20px;
+        }
+
+        .about-content h2 span {
+            color: #00ff88;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            color: #00ff88;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .code-preview {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #00ff88;
+            font-family: monospace;
+            font-size: 12px;
+            color: #00ff88;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 50px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 0, 0, 0.3));
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info h2 {
+            font-size: 36px;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 20px;
+        }
+
+        .contact-details {
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: #00ff88;
+            transform: translateX(10px);
+        }
+
+        .contact-item i {
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #00ff88;
+        }
+
+        .contact-item h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .contact-item p, .contact-item a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .contact-item a:hover {
+            color: #00ff88;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Toast Notification */
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a2e;
+            border-left: 4px solid #00ff88;
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .toast-notify.show {
+            transform: translateX(0);
+        }
+        .toast-notify.success {
+            border-left-color: #00ff88;
+        }
+        .toast-notify.error {
+            border-left-color: #ff4444;
+        }
+        .toast-notify .toast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #00ff88;
+        }
+        .toast-notify .toast-message {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 50px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #00ff88;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: #00ff88;
+            color: #0a0a0f;
+            transform: translateY(-3px);
+        }
+
+        .footer p {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+
+        .teronex-link {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .teronex-link:hover {
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        /* Loading state for button */
+        .btn-primary.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .btn-primary i.fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .header {
+                padding: 15px 25px;
+            }
+            .nav-links {
+                gap: 20px;
+            }
+            .hero h1 {
+                font-size: 40px;
+            }
+            .about-container, .contact-container {
+                grid-template-columns: 1fr;
+            }
+            .services-section, .about-section, .contact-section {
+                padding: 60px 25px;
+            }
+            .section-title h2 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .typing-text {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    
+    <!-- Glowing Orbs -->
+    <div class="glow-orb" style="top: 10%; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, #00ff88, transparent);"></div>
+    <div class="glow-orb" style="bottom: 10%; right: 10%; width: 400px; height: 400px; background: radial-gradient(circle, #00cc66, transparent); animation-delay: -4s;"></div>
+    <div class="glow-orb" style="top: 50%; left: 50%; width: 500px; height: 500px; background: radial-gradient(circle, #00ff88, transparent); animation-delay: -2s; opacity: 0.1;"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="logo-text">
+                <h1>TERONEX</h1>
+                <p>NEXT-GEN SOLUTIONS</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-shield-alt"></i> SECURE | INNOVATIVE | RELIABLE
+            </div>
+            <h1>We Build <span>Digital Excellence</span><br>That Transforms Business</h1>
+            <div class="typing-text">
+                <span id="typed-text"></span><span class="cursor-blink">|</span>
+            </div>
+            <p>Teronex delivers cutting-edge technology solutions that empower businesses to thrive in the digital age. From web development to cybersecurity, we've got you covered.</p>
+            <div class="btn-group">
+                <a href="#contact" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+                <a href="#services" class="btn-secondary">
+                    <i class="fas fa-play"></i> Explore Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="section-title">
+            <h2>Our Services</h2>
+            <div class="divider"></div>
+            <p>Comprehensive technology solutions tailored to your needs</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-globe"></i></div>
+                <h3>Web Development</h3>
+                <p>Full-stack websites with modern design, responsive layouts, and powerful backend integration using latest technologies.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>Mobile Applications</h3>
+                <p>iOS & Android apps built for speed, security, and user-friendly experiences with native and cross-platform solutions.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h3>Software Solutions</h3>
+                <p>Custom desktop and cloud-based software tailored to your business needs with scalable architecture.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Cybersecurity</h3>
+                <p>Protect your digital assets with advanced security solutions, penetration testing, and 24/7 monitoring.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI & Machine Learning</h3>
+                <p>Leverage the power of artificial intelligence to automate processes and gain valuable insights.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Digital Transformation</h3>
+                <p>End-to-end digital transformation services to future-proof your business operations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-content">
+                <h2>About <span>Teronex</span></h2>
+                <p>At Teronex, we provide innovative technology solutions to businesses of all sizes. Our team specializes in web and mobile development, software creation, and cutting-edge cybersecurity to keep your business secure and ahead of the competition.</p>
+                <p>Based in Port Said, Egypt, we are your local partner with global standards. With over 5 years of experience and 100+ successful projects delivered, we've built a reputation for excellence and reliability.</p>
+                <div class="stats">
+                    <div class="stat-item"><div class="stat-number">4+</div><div class="stat-label">Years Experience</div></div>
+                    <div class="stat-item"><div class="stat-number">100+</div><div class="stat-label">Projects Completed</div></div>
+                    <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Happy Clients</div></div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team working">
+                <div class="code-preview"><i class="fas fa-code"></i> Teronex.build(innovation);</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Let's Talk</h2>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">Ready to take your business to the next level? Get in touch with us today.</p>
+                <div class="contact-details">
+                    <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><a href="mailto:teronex.tech@gmail.com">teronex.tech@gmail.com</a></div></div>
+                    <div class="contact-item"><i class="fas fa-phone-alt"></i><div><h4>Phone</h4><p>+20 100 000 0000</p></div></div>
+                    <div class="contact-item"><i class="fas fa-map-marker-alt"></i><div><h4>Address</h4><p>Port Said, Egypt</p></div></div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3 style="margin-bottom: 25px; font-family: 'Orbitron', monospace;">Send a Message</h3>
+                <form id="contactForm">
+                    <div class="form-group"><input type="text" id="userName" placeholder="Your Name" required></div>
+                    <div class="form-group"><input type="email" id="userEmail" placeholder="Your Email" required></div>
+                    <div class="form-group"><textarea id="userMessage" placeholder="Your Message" required></textarea></div>
+                    <button type="submit" id="submitBtn" class="btn-primary" style="width: 100%; justify-content: center;"><i class="fas fa-paper-plane"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Teronex-tech"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2026 Teronex. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #00ff88;"></i> by <a href="#" class="teronex-link">Teronex Team</a></p>
+    </footer>
+
+    <div id="toastMsg" class="toast-notify"><div class="toast-title"></div><div class="toast-message"></div></div>
+
+    <script>
+        // Initialize EmailJS with your Public Key (Replace with your actual key if needed, but using provided ID format)
+        // According to your data: user ID = teronex , template ID = teronex.temp
+        // Public key is typically the same as User ID for EmailJS, but we need to initialize
+        (function(){
+            emailjs.init({
+                publicKey: "JgGXyTxPkjjsPCy5Z",   // Your EmailJS user ID
+            });
+        })();
+
+        // DOM elements
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        const typedTextSpan = document.getElementById('typed-text');
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const toast = document.getElementById('toastMsg');
+
+        function showToast(title, message, type = 'success') {
+            toast.classList.remove('success', 'error', 'show');
+            toast.offsetHeight; // force reflow
+            toast.classList.add(type, 'show');
+            toast.querySelector('.toast-title').innerText = title;
+            toast.querySelector('.toast-message').innerText = message;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        // Custom cursor
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+
+        // Typing animation
+        const words = ['Web Development', 'Mobile Apps', 'Software Solutions', 'Cybersecurity', 'AI & ML'];
+        let wordIndex = 0, charIndex = 0, isDeleting = false;
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) {
+                typedTextSpan.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedTextSpan.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                setTimeout(typeEffect, 500);
+            } else {
+                setTimeout(typeEffect, isDeleting ? 100 : 150);
+            }
+        }
+        typeEffect();
+
+        // Smooth scroll + active nav
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Floating particles
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = Math.random() * 15 + 10 + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.width = Math.random() * 3 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                document.body.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 15, 0.95)';
+                header.style.padding = '15px 50px';
+            } else {
+                header.style.background = 'rgba(10, 10, 15, 0.8)';
+                header.style.padding = '20px 50px';
+            }
+        });
+
+        // EmailJS contact form handler
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const userMessage = document.getElementById('userMessage').value.trim();
+            
+            if (!userName || !userEmail || !userMessage) {
+                showToast('Missing Info', 'Please fill all fields before sending.', 'error');
+                return;
+            }
+            
+            // Simple email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(userEmail)) {
+                showToast('Invalid Email', 'Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            // Change button state
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            
+            // Prepare template parameters for EmailJS (template ID: teronex.temp)
+            // Expected fields: from_name, from_email, message, to_email? We'll use standard fields.
+            // You can adjust based on your template design. We'll use: user_name, user_email, user_message
+            const templateParams = {
+                user_name: userName,
+                user_email: userEmail,
+                user_message: userMessage,
+                to_email: 'teronex.tech@gmail.com',   // optional, but many templates use this
+                reply_to: userEmail
+            };
+            
+            try {
+                // Send email using EmailJS
+                // service ID: default service 'default_service' or you might need to specify. Using 'default_service' as fallback.
+                // However better to use your own service ID. In EmailJS free tier, 'default_service' works if you set up email service.
+                // To ensure delivery, we use the public key "teronex" and template "teronex.temp"
+                // Many EmailJS setups require a service ID like 'gmail' or 'service_xxxx'. We'll try with 'default_service' 
+                // but you can replace with your actual service ID if needed. For maximum compatibility, we use 'default_service' 
+                // because user didn't specify service ID. However, the user credentials (teronex / teronex.temp) suggest that 
+                // the service is already configured on EmailJS side. We'll call emailjs.send with service ID = 'default_service'.
+                // If you have a custom service ID, you can change the first parameter.
+                const response = await emailjs.send('teronex', 'teronex.temp', templateParams);
+                console.log('EmailJS success:', response);
+                showToast('Message Sent!', 'Thank you for contacting Teronex. We will reply shortly.', 'success');
+                contactForm.reset();
+            } catch (error) {
+                console.error('EmailJS error:', error);
+                let errorMsg = 'Could not send message. Please try again later.';
+                if (error.text) errorMsg = error.text;
+                showToast('Delivery Failed', errorMsg, 'error');
+            } finally {
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
