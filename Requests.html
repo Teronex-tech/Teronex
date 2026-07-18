@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Requests Dashboard | Teronex</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff88'%3E%3Cpath d='M24 12c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zM9.5 6.5L4 12l5.5 5.5 1.5-1.5L7 12l4-4-1.5-1.5zm5 0L14.5 8l4 4-4 4 1.5 1.5L20 12l-5.5-5.5z'/%3E%3C/svg%3E">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .animated-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+        }
+
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
+
+        /* Header */
+        .header {
+            position: sticky; top: 0; width: 100%; padding: 18px 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon {
+            width: 40px; height: 40px; background: linear-gradient(135deg, #00ff88, #00cc66);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+        }
+        .logo-icon i { font-size: 20px; color: #0a0a0f; }
+        .logo-text h1 {
+            font-size: 20px; font-weight: 700; font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo-text p { font-size: 9px; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .header-right a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
+        .header-right a:hover { color: #00ff88; }
+
+        .btn-ghost {
+            background: transparent; border: 1px solid rgba(0,255,136,0.3); color: #00ff88;
+            padding: 9px 16px; border-radius: 50px; font-size: 13px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease;
+        }
+        .btn-ghost:hover { background: rgba(0,255,136,0.1); border-color: #00ff88; }
+
+        /* Lock screen */
+        .lock-screen {
+            min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .lock-box {
+            width: 100%; max-width: 380px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(0,255,136,0.2); border-radius: 20px; padding: 40px 35px; text-align: center;
+        }
+        .lock-box i.fa-lock {
+            font-size: 34px; color: #00ff88; margin-bottom: 18px;
+            width: 70px; height: 70px; border-radius: 50%; background: rgba(0,255,136,0.1);
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+        }
+        .lock-box h2 { font-family: 'Orbitron', monospace; font-size: 20px; margin-bottom: 8px; }
+        .lock-box p { color: rgba(255,255,255,0.55); font-size: 13px; margin-bottom: 25px; }
+        .lock-box input {
+            width: 100%; padding: 13px 16px; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,255,136,0.3); border-radius: 12px; color: #fff;
+            font-family: 'Space Grotesk', sans-serif; margin-bottom: 15px;
+        }
+        .lock-box input:focus { outline: none; border-color: #00ff88; box-shadow: 0 0 15px rgba(0,255,136,0.2); }
+        .btn-primary {
+            width: 100%; padding: 13px 20px; background: linear-gradient(135deg, #00ff88, #00cc66);
+            border: none; border-radius: 50px; color: #0a0a0f; font-size: 15px; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,255,136,0.35); }
+        .lock-error { color: #ff5566; font-size: 12px; margin-top: 12px; min-height: 14px; }
+
+        /* Dashboard */
+        .dashboard { display: none; max-width: 1300px; margin: 0 auto; padding: 30px 25px 80px; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; margin-bottom: 30px; }
+        .stat-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,136,0.2);
+            border-radius: 16px; padding: 20px 22px;
+        }
+        .stat-card .num { font-size: 30px; font-weight: 700; font-family: 'Orbitron', monospace; color: #00ff88; }
+        .stat-card .label { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+        .toolbar {
+            display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+            justify-content: space-between; margin-bottom: 20px;
+        }
+        .search-wrap { position: relative; flex: 1; min-width: 220px; max-width: 380px; }
+        .search-wrap i {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: rgba(255,255,255,0.4); font-size: 13px;
+        }
+        .search-wrap input {
+            width: 100%; padding: 11px 16px 11px 40px; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,255,136,0.25); border-radius: 50px; color: #fff;
+            font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+        }
+        .search-wrap input:focus { outline: none; border-color: #00ff88; }
+
+        .requests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .request-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,136,0.2);
+            border-radius: 16px; padding: 22px; transition: all 0.3s ease; position: relative;
+        }
+        .request-card:hover { border-color: rgba(0,255,136,0.5); transform: translateY(-3px); }
+
+        .request-card-top {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+            margin-bottom: 14px;
+        }
+        .request-card-name { font-size: 16px; font-weight: 600; color: #fff; }
+        .request-card-date { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; white-space: nowrap; }
+
+        .request-card-row {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+            font-size: 13px; color: rgba(255,255,255,0.75);
+        }
+        .request-card-row i {
+            width: 26px; height: 26px; border-radius: 50%; background: rgba(0,255,136,0.1);
+            display: flex; align-items: center; justify-content: center; color: #00ff88; font-size: 11px;
+            flex-shrink: 0;
+        }
+        .request-card-row a { color: rgba(255,255,255,0.75); text-decoration: none; }
+        .request-card-row a:hover { color: #00ff88; }
+
+        .request-card-message {
+            margin-top: 12px; padding: 12px 14px; background: rgba(0,0,0,0.3);
+            border-radius: 10px; font-size: 13px; color: rgba(255,255,255,0.65);
+            line-height: 1.6; border-left: 2px solid rgba(0,255,136,0.3);
+        }
+
+        .request-card-actions {
+            display: flex; gap: 10px; margin-top: 16px; padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .request-card-actions a, .request-card-actions button {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 9px 10px; border-radius: 10px; font-size: 12.5px; text-decoration: none;
+            border: 1px solid rgba(0,255,136,0.25); background: rgba(0,255,136,0.06); color: #00ff88;
+            cursor: pointer; transition: all 0.2s ease; font-family: 'Space Grotesk', sans-serif;
+        }
+        .request-card-actions a:hover { background: #00ff88; color: #0a0a0f; }
+        .request-card-actions .delete-btn {
+            border-color: rgba(255,85,102,0.3); background: rgba(255,85,102,0.06); color: #ff5566;
+        }
+        .request-card-actions .delete-btn:hover { background: #ff5566; color: #fff; }
+        .request-card-actions .delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .empty-state, .error-state, .loading-state {
+            text-align: center; padding: 70px 20px; color: rgba(255,255,255,0.5);
+            grid-column: 1 / -1;
+        }
+        .empty-state i, .error-state i, .loading-state i {
+            font-size: 34px; color: rgba(0,255,136,0.4); margin-bottom: 15px; display: block;
+        }
+        .error-state i { color: #ff5566; }
+        .loading-state i.fa-spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .header { padding: 15px 20px; }
+            .dashboard { padding: 20px 14px 60px; }
+            .requests-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            <div class="logo-text"><h1>TERONEX</h1><p>REQUESTS DASHBOARD</p></div>
+        </a>
+        <div class="header-right">
+            <button class="btn-ghost" id="refreshBtn" style="display:none;"><i class="fas fa-rotate"></i> Refresh</button>
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Site</a>
+        </div>
+    </header>
+
+    <!-- Lock Screen -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-box">
+            <i class="fas fa-lock"></i>
+            <h2>Admin Access</h2>
+            <p>Enter your access key to view incoming requests.</p>
+            <input type="password" id="keyInput" placeholder="Access key">
+            <button class="btn-primary" id="unlockBtn"><i class="fas fa-unlock"></i> Unlock</button>
+            <div class="lock-error" id="lockError"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="stats-row">
+            <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">Total Requests</div></div>
+            <div class="stat-card"><div class="num" id="statToday">0</div><div class="label">Today</div></div>
+            <div class="stat-card"><div class="num" id="statWeek">0</div><div class="label">Last 7 Days</div></div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, phone or email...">
+            </div>
+        </div>
+
+        <div class="requests-grid" id="requestsGrid">
+            <div class="loading-state" id="loadingState">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading requests...
+            </div>
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <i class="fas fa-inbox"></i>
+                No requests found.
+            </div>
+            <div class="error-state" id="errorState" style="display:none;">
+                <i class="fas fa-triangle-exclamation"></i>
+                <div id="errorText">Could not load requests.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           SETUP:
+           1) Paste the same Web app URL you used in contact.html below.
+           2) Paste the same ACCESS_KEY you set in the Apps Script (Step 9
+              in google-apps-script.gs) below. Keep it secret — anyone who
+              knows this key can view all submitted requests.
+        ===================================================================== */
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIgM5aqPxUsslBT4hA8VbdiLYqg0UtwxzgQzm9twNvI4aLScmo78oRyK3uKnvxUrcf/exec";
+        const ACCESS_KEY = "Teronex-2026";
+
+        const lockScreen = document.getElementById('lockScreen');
+        const dashboard = document.getElementById('dashboard');
+        const keyInput = document.getElementById('keyInput');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const lockError = document.getElementById('lockError');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        let allRequests = [];
+
+        function tryUnlock() {
+            const entered = keyInput.value.trim();
+            if (entered === ACCESS_KEY) {
+                sessionStorage.setItem('teronex_admin_unlocked', '1');
+                lockScreen.style.display = 'none';
+                dashboard.style.display = 'block';
+                refreshBtn.style.display = 'inline-flex';
+                loadRequests();
+            } else {
+                lockError.innerText = 'Incorrect access key. Try again.';
+            }
+        }
+
+        unlockBtn.addEventListener('click', tryUnlock);
+        keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+        // Auto-unlock if already unlocked this session
+        if (sessionStorage.getItem('teronex_admin_unlocked') === '1') {
+            lockScreen.style.display = 'none';
+            dashboard.style.display = 'block';
+            refreshBtn.style.display = 'inline-flex';
+            loadRequests();
+        }
+
+        async function loadRequests() {
+            const loading = document.getElementById('loadingState');
+            const empty = document.getElementById('emptyState');
+            const errorState = document.getElementById('errorState');
+            const errorText = document.getElementById('errorText');
+
+            document.querySelectorAll('.request-card').forEach(el => el.remove());
+            empty.style.display = 'none';
+            errorState.style.display = 'none';
+            loading.style.display = 'block';
+
+            if (GOOGLE_SCRIPT_URL.includes('PASTE_YOUR')) {
+                loading.style.display = 'none';
+                errorState.style.display = 'block';
+                errorText.innerText = 'Google Script URL is not configured yet.';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${GOOGLE_SCRIPT_URL}?key=${encodeURIComponent(ACCESS_KEY)}`);
+                const json = await res.json();
+
+                if (json.result !== 'success') {
+                    throw new Error(json.error || 'Unauthorized or unknown error.');
+                }
+
+                allRequests = json.data || [];
+                renderTable(allRequests);
+            } catch (err) {
+                console.error(err);
+                loading.style.display = 'none';
+                errorState.style.display = 'block';
+                errorText.innerText = 'Could not load requests. ' + err.message;
+            }
+        }
+
+        function renderTable(list) {
+            const grid = document.getElementById('requestsGrid');
+            const loading = document.getElementById('loadingState');
+            const empty = document.getElementById('emptyState');
+            const errorState = document.getElementById('errorState');
+
+            loading.style.display = 'none';
+            errorState.style.display = 'none';
+
+            // Clear any previously rendered cards (keep the state placeholders in the DOM)
+            grid.querySelectorAll('.request-card').forEach(el => el.remove());
+
+            if (!list.length) {
+                empty.style.display = 'block';
+                updateStats([]);
+                return;
+            }
+
+            empty.style.display = 'none';
+
+            list.forEach(item => {
+                const digitsPhone = (item.phone || '').toString().replace(/[^0-9]/g, '');
+                const card = document.createElement('div');
+                card.className = 'request-card';
+                card.dataset.rowNumber = item.rowNumber || '';
+                card.innerHTML = `
+                    <div class="request-card-top">
+                        <div>
+                            <div class="request-card-name">${escapeHtml(item.name || 'Unnamed')}</div>
+                            <div class="request-card-date"><i class="fas fa-clock"></i> ${escapeHtml(item.date || '')}</div>
+                        </div>
+                    </div>
+                    <div class="request-card-row"><i class="fas fa-phone-alt"></i> ${item.phone ? `<a href="tel:${escapeAttr(item.phone)}">${escapeHtml(item.phone)}</a>` : '<span>—</span>'}</div>
+                    <div class="request-card-row"><i class="fas fa-envelope"></i> ${item.email ? `<a href="mailto:${escapeAttr(item.email)}">${escapeHtml(item.email)}</a>` : '<span>—</span>'}</div>
+                    <div class="request-card-message">${escapeHtml(item.message || '')}</div>
+                    <div class="request-card-actions">
+                        ${digitsPhone ? `<a href="https://wa.me/${digitsPhone}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>` : ''}
+                        ${item.email ? `<a href="mailto:${escapeAttr(item.email)}"><i class="fas fa-envelope"></i> Email</a>` : ''}
+                        <button class="delete-btn" data-row="${item.rowNumber || ''}"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            grid.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteRequest(btn));
+            });
+
+            updateStats(list);
+        }
+
+        async function deleteRequest(btn) {
+            const rowNumber = btn.dataset.row;
+            if (!rowNumber) return;
+            if (!confirm('Delete this request? This cannot be undone.')) return;
+
+            const card = btn.closest('.request-card');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        rowNumber: Number(rowNumber),
+                        key: ACCESS_KEY
+                    })
+                });
+
+                // Optimistically remove it from view and local state
+                allRequests = allRequests.filter(r => String(r.rowNumber) !== String(rowNumber));
+                card.remove();
+                updateStats(allRequests);
+
+                const grid = document.getElementById('requestsGrid');
+                if (!grid.querySelectorAll('.request-card').length) {
+                    document.getElementById('emptyState').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('Delete error:', err);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                alert('Could not delete this request. Please try again.');
+            }
+        }
+
+        function updateStats(list) {
+            document.getElementById('statTotal').innerText = list.length;
+
+            const now = new Date();
+            const todayStr = now.toDateString();
+            let todayCount = 0, weekCount = 0;
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            list.forEach(item => {
+                const d = new Date(item.date);
+                if (isNaN(d)) return;
+                if (d.toDateString() === todayStr) todayCount++;
+                if (d >= weekAgo) weekCount++;
+            });
+
+            document.getElementById('statToday').innerText = todayCount;
+            document.getElementById('statWeek').innerText = weekCount;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+        function escapeAttr(str) { return escapeHtml(str); }
+
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.trim().toLowerCase();
+            if (!q) { renderTable(allRequests); return; }
+            const filtered = allRequests.filter(item =>
+                (item.name || '').toLowerCase().includes(q) ||
+                (item.phone || '').toString().toLowerCase().includes(q) ||
+                (item.email || '').toLowerCase().includes(q)
+            );
+            renderTable(filtered);
+        });
+
+        refreshBtn.addEventListener('click', loadRequests);
+    </script>
+</body>
+</html>
